@@ -6,6 +6,7 @@ export type ServerConfiguration = {
   port: number;
   database: DatabaseConfiguration;
   auth: AuthConfiguration;
+  enableSwagger: boolean;
 };
 
 export type DatabaseConfiguration = {
@@ -22,7 +23,8 @@ export type AuthConfiguration = {
   salt: string;
 };
 
-const { PORT, DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, DB_SYNCHRONIZE, JWT_SECRET, SALT } = process.env;
+const { PORT, DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, DB_SYNCHRONIZE, JWT_SECRET, SALT, ENABLE_SWAGGER } =
+  process.env;
 
 const requiredEnv = {
   DB_HOST,
@@ -49,6 +51,7 @@ const required = requiredEnv as Record<keyof typeof requiredEnv, string>;
 export default function (): ServerConfiguration {
   return {
     port: Number(PORT) || 3000,
+    enableSwagger: ENABLE_SWAGGER === 'true',
     database: {
       host: required.DB_HOST,
       port: Number(DB_PORT) || 5432,
