@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from 'src/entities/user.entity';
 import { UpdateUserDTO } from './dto/update-user.dto';
-import { CreateUserDTO } from './dto/register-user.dto';
+import { RegisterUserDTO } from './dto/register-user.dto';
 import { encryptPassword } from 'src/common/crypto.util';
 import { ConfigService } from '@nestjs/config';
 
@@ -47,14 +47,14 @@ export class UsersService {
     return user;
   }
 
-  async create(createUserDto: CreateUserDTO): Promise<User> {
-    const usersExists = await this.getByLogin(createUserDto.login);
+  async create(registerUserDto: RegisterUserDTO): Promise<User> {
+    const usersExists = await this.getByLogin(registerUserDto.login);
     if (usersExists) {
-      throw new BadRequestException('A user with this email already exists');
+      throw new BadRequestException('A user with this login already exists');
     }
-    createUserDto.password = encryptPassword(createUserDto.password, this.salt);
+    registerUserDto.password = encryptPassword(registerUserDto.password, this.salt);
 
-    return this.userModel.create({ ...createUserDto });
+    return this.userModel.create(registerUserDto);
   }
 
   async edit(id: string, partialEntity: UpdateUserDTO) {

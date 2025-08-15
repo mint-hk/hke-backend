@@ -10,6 +10,7 @@ async function bootstrap() {
   const config = configuration();
 
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -29,7 +30,7 @@ async function bootstrap() {
       .addTag('users')
       .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api', app, document, {
+    SwaggerModule.setup('api/docs', app, document, {
       swaggerOptions: { docExpansion: 'none' },
     });
   }

@@ -1,6 +1,6 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
-import { IsString, MinLength } from 'class-validator';
+import { IsString, MaxLength, MinLength } from 'class-validator';
 import {
   MAX_DISPLAY_NAME_LENGTH,
   MAX_LOGIN_LENGTH,
@@ -14,32 +14,20 @@ import {
 export class UserDTO {
   @Expose()
   @IsString()
-  @MinLength(MIN_LOGIN_LENGTH, {
-    message: 'Login is too short. Minimal length is $constraint1 characters, but actual is $value',
-  })
-  @MinLength(MAX_LOGIN_LENGTH, {
-    message: 'Login is too long. Maximum length is $constraint1 characters, but actual is $value',
-  })
+  @MinLength(MIN_LOGIN_LENGTH)
+  @MaxLength(MAX_LOGIN_LENGTH)
   login: string;
 
   @Expose()
   @IsString()
-  @MinLength(MIN_PASSWORD_LENGTH, {
-    message: 'Password is too short. Minimal length is $constraint1 characters, but actual is $value',
-  })
-  @MinLength(MAX_PASSWORD_LENGTH, {
-    message: 'Password is too long. Maximum length is $constraint1 characters, but actual is $value',
-  })
+  @MinLength(MIN_PASSWORD_LENGTH)
+  @MaxLength(MAX_PASSWORD_LENGTH)
   password: string;
 
   @Expose()
   @IsString()
-  @MinLength(MIN_DISPLAY_NAME_LENGTH, {
-    message: 'Display name is too short. Minimal length is $constraint1 characters, but actual is $value',
-  })
-  @MinLength(MAX_DISPLAY_NAME_LENGTH, {
-    message: 'Display name is too long. Maximum length is $constraint1 characters, but actual is $value',
-  })
+  @MinLength(MIN_DISPLAY_NAME_LENGTH)
+  @MaxLength(MAX_DISPLAY_NAME_LENGTH)
   displayName: string;
 
   @ApiHideProperty()
